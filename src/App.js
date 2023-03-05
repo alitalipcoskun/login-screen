@@ -1,51 +1,26 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import './App.css';
 import MainHeader from './Components/Header/Header';
 import LoginPage from './Components/LoginScreen/Login';
 import MainPage from './Components/MainScreen/Main';
+import AuthContext from './Context/AuthContext';
 
-function App() {  
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const userLoggedInInfo = localStorage.getItem('isLoggedIn');
-    if(userLoggedInInfo === '1'){
-      setIsLoggedIn(true);
-    }
-  }, []);
-  const [user, setUserInfo] = useState({
-    username: '',
-    password: '',
-  })
-  const loginHandler = (enteredEmail, enteredPassword) => {
-    //Dummy demo, login process must be here.
-    localStorage.setItem('isLoggedIn','1');    
-    setIsLoggedIn(true);
-    setUserInfo({
-      username: enteredEmail,
-      password: enteredPassword,
-    });
-  }
-
-  const logoutHandler = () => {
-    setIsLoggedIn(false);
-    localStorage.setItem('isLoggedIn', '0');
-    setUserInfo({
-      username: '',
-      password: '',
-    })
-  }
+function App() {
 
 
+
+
+  const context = useContext(AuthContext);
   return (
     <React.Fragment>
-        <MainHeader isAuthenticated = {isLoggedIn} onLoggingOut = {logoutHandler} onHeader = {user}></MainHeader>
-        <main>
-        {!isLoggedIn && <LoginPage onLogin = {loginHandler}></LoginPage>}
-        {isLoggedIn && <MainPage onLoggingOut = {logoutHandler}></MainPage>}
-        </main>
+        <MainHeader isAuthenticated={context.isLoggedIn} onLoggingOut={context.onLogOut} onHeader={context.userInfo}></MainHeader>
+      <main>
+        {!context.isLoggedIn && <LoginPage></LoginPage>}
+        {context.isLoggedIn && <MainPage></MainPage>}
+      </main>
     </React.Fragment>
+
   );
 }
 

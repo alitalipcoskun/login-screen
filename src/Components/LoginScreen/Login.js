@@ -1,4 +1,5 @@
-import React, {useState, useEffect, useReducer} from "react";
+import React, {useState, useEffect, useReducer, useContext} from "react";
+import AuthContext from "../../Context/AuthContext";
 import Button from "../UI/Button/Button";
 import Card from "../UI/Card/Card";
 
@@ -30,7 +31,7 @@ function LoginPage(props){
 
     //const [enteredPassword, setEnteredPassword] = useState("");
     //const [passwordIsValid, setPasswordIsValid] = useState();
-
+    const context = useContext(AuthContext);
     const [formIsValid, setFormIsValid] = useState();
 
     const [emailState, dispatchEmail] = useReducer(emailReducer, {value: '', isValid: null});
@@ -70,7 +71,7 @@ function LoginPage(props){
 
     const submitHandler = (event) => {
         event.preventDefault();
-        props.onLogin(emailState.value, passwordState.value);
+        context.onLogIn(emailState.value, passwordState.value);
     }
 
 
